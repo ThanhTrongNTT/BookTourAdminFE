@@ -11,7 +11,7 @@ export const userLogin = createAsyncThunk('user/login', async (user: userAuth) =
     }
 });
 
-export const userGetMe = createAsyncThunk('user/getMe', async (email: string) => {
+export const userGetMe = createAsyncThunk('user/getMe', async (email: any) => {
     try {
         const result = await userApi.getMe(email);
         if (result.data) return result.data;
@@ -56,7 +56,7 @@ const userSlice = createSlice({
     initialState,
     reducers: {
         update: (state, action) => {
-            state.userInfo = action.payload.user;
+            state.userInfo = action.payload;
         },
         setMessage: (state, action) => {
             state.message = action.payload;
@@ -69,6 +69,7 @@ const userSlice = createSlice({
     },
 });
 
-const { reducer, actions } = userSlice;
-export const { setMessage, resetUserState } = actions;
-export default reducer;
+// const { reducer, actions } = userSlice;
+// export const { setMessage, resetUserState, update } = actions;
+export default userSlice.reducer;
+export const { update, setMessage, resetUserState } = userSlice.actions;

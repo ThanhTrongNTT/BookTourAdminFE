@@ -1,51 +1,13 @@
-import { Avatar, Pagination } from 'flowbite-react';
-import { useEffect, useState } from 'react';
+import { Pagination } from 'flowbite-react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import userApi from '~/api/user.api';
 import { IconAdd } from '~/components/icon/Icon';
 
-const List = () => {
+const ListBooking = () => {
     const [currentPage, setCurrentPage] = useState(1);
-    const [users, setUsers] = useState<any>([]);
-    const [totalPages, setTotalPages] = useState(1);
-    const [response, setResponse] = useState<any>();
     const onPageChange = (page: number) => {
-        userApi.getUsers(page - 1).then((users) => {
-            setUsers(users.data);
-        });
         setCurrentPage(page);
     };
-
-    if (response) {
-        if (response.totalPages !== totalPages) {
-            setTotalPages(response.totalPages);
-        }
-    }
-    const handleDelete = () =>
-        toast.success('Delete Success!', {
-            delay: 50,
-            draggable: true,
-            pauseOnHover: false,
-        });
-
-    const toastMessage = async () => {
-        toast.success('Edit View!', {
-            delay: 50,
-            draggable: false,
-            pauseOnHover: false,
-        });
-    };
-    useEffect(() => {
-        const getData = async () => {
-            await userApi.getUsers(currentPage - 1).then((users) => {
-                setResponse(users);
-                setUsers(users.data);
-            });
-        };
-        getData();
-    }, []);
-
     return (
         <>
             <div className='p-2'>
@@ -53,7 +15,6 @@ const List = () => {
                     <Link to={'new'}>
                         <button className='flex items-center text-black bg-white p-1 mx-8 my-2 rounded-2xl border border-gray-c4'>
                             <IconAdd />
-
                             <span className='flex items-center mr-2'>Add New</span>
                         </button>
                     </Link>
@@ -82,8 +43,8 @@ const List = () => {
                                 </th>
                             </tr>
                         </thead>
-                        <tbody>
-                            {users.map((user: any, index: number) => (
+                        {/* <tbody>
+                            {tours.map((user: any, index: number) => (
                                 <tr className='bg-white border-b border-gray-c4 hover:bg-gray-c2 cursor-pointer'>
                                     <th
                                         scope='row'
@@ -106,37 +67,37 @@ const List = () => {
                                     <td className='py-4 px-6 text-gray-c8'>
                                         <button
                                             className='text-green-500 font-semibold uppercase'
-                                            onClick={() => toastMessage()}
+                                            // onClick={() => toastMessage()}
                                         >
                                             <span>Edit</span>
                                         </button>
                                         <button
                                             className='ml-2 text-red-500 font-semibold uppercase'
-                                            onClick={() => handleDelete()}
+                                            // onClick={() => handleDelete()}
                                         >
                                             <span>Delete</span>
                                         </button>
                                     </td>
                                 </tr>
                             ))}
-                        </tbody>
+                        </tbody> */}
                     </table>
                 </div>
-                {totalPages > 1 ? (
-                    <div className='flex items-center justify-center text-center'>
-                        <Pagination
-                            showIcons={true}
-                            currentPage={currentPage}
-                            totalPages={totalPages}
-                            onPageChange={onPageChange}
-                        />
-                    </div>
-                ) : (
+                {/* {totalPages > 1 ? ( */}
+                <div className='ml-10'>
+                    <Pagination
+                        showIcons={true}
+                        currentPage={1}
+                        totalPages={1}
+                        onPageChange={onPageChange}
+                    />
+                </div>
+                {/* ) : (
                     ''
-                )}
+                )} */}
             </div>
         </>
     );
 };
 
-export default List;
+export default ListBooking;

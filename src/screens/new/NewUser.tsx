@@ -5,9 +5,9 @@ const NewUser = () => {
     const { handleSubmit, control, setValue } = useForm();
     return (
         <div className='max-w-5xl mx-auto'>
-            <form>
-                <h1 className='font-bold text-lg'>Add New User</h1>
-                <div className='grid grid-cols-2 gap-10'>
+            <form className='mt-10'>
+                <h1 className='font-bold text-lg'>New User</h1>
+                {/* <div className='grid grid-cols-2 gap-10'>
                     <Field
                         control={control}
                         name='tourName'
@@ -16,7 +16,8 @@ const NewUser = () => {
                     >
                         Tour Name
                     </Field>
-                </div>
+                </div> */}
+                <input type='text' className='border border-gray-c3 m-4 px-5 rounded-lg' />
             </form>
         </div>
     );

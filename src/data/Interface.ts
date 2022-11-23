@@ -62,3 +62,10 @@ export interface Pagination {
     sortBy: string;
     sortDir: string;
 }
+
+export interface JWTType {
+    admin: boolean;
+    sub: string;
+    exp: number;
+    iat: number;
+}

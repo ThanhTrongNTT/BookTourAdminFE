@@ -1,9 +1,9 @@
-import { Pagination, Tour } from '~/data/Interface';
+import { Tour } from '~/data/Interface';
 import AxiosClient from './axiosClient/AxiosClient';
 
 const tourApi = {
-    getTours: ({ pageNo, pageSize, sortBy, sortDir }: Pagination) => {
-        const url = `tours/paging?pageNo=${pageNo}&pageSize=${pageSize}&sortBy=${sortBy}&sortDir=${sortDir}`;
+    getTours: (pageNo: number) => {
+        const url = `tours/paging?pageNo=${pageNo}&pageSize=4`;
         return AxiosClient.get(url);
     },
     getTourById: (id: string) => {

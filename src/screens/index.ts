@@ -1,8 +1,9 @@
 import Login from './login/Login';
 import Home from './home/Home';
 import ListUser from './list/ListUser';
-import ListCategory from './list/ListCatgory';
-import ListPost from './list/ListPost';
+import ListLocation from './list/ListLocation';
+import ListBooking from './list/ListBooking';
+import ListTour from './list/ListTour';
 import DetailUser from './detail/DetailUser';
 import DetailCategory from './detail/DetailCategory';
 import DetailPost from './detail/DetailPost';
@@ -16,8 +17,9 @@ export {
     DetailUser,
     NewUser,
     Login,
-    ListCategory,
-    ListPost,
+    ListLocation,
+    ListBooking,
+    ListTour,
     DetailCategory,
     DetailPost,
     NewCategory,

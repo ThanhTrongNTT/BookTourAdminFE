@@ -29,9 +29,10 @@ const Home = () => {
             <div>
                 <div className='flex p-4 bg-transparent m-2 rounded-lg'>
                     <div className='flex'>
-                        {widgets.map((widget) => (
+                        {widgets.map((widget, index) => (
                             <>
                                 <Widget
+                                    key={index}
                                     title={widget.title}
                                     content={widget.content}
                                     percent={widget.percent}

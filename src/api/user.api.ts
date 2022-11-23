@@ -1,4 +1,4 @@
-import { Address, Pagination } from '~/data/Interface';
+import { Address } from '~/data/Interface';
 import AxiosClient from './axiosClient/AxiosClient';
 
 export interface userAuth {
@@ -15,6 +15,10 @@ export interface UserUpdateProfile {
     avatar: string;
 }
 const userApi = {
+    refreshToken: (refreshToken: string) => {
+        const url = `token:${refreshToken}`;
+        return AxiosClient.post(url);
+    },
     login: (email: string, password: string) => {
         const url = 'auth/login';
         return AxiosClient.post(url, { email, password });
@@ -23,8 +27,8 @@ const userApi = {
         const url = `user/${email}`;
         return AxiosClient.get(url);
     },
-    getUsers: ({ pageNo, pageSize, sortBy, sortDir }: Pagination) => {
-        const url = `users/paging?pageNo=${pageNo}&pageSize=${pageSize}&sortBy=${sortBy}&sortDir=${sortDir}`;
+    getUsers: (pageNo: number) => {
+        const url = `users/paging?pageNo=${pageNo}&pageSize=3`;
         return AxiosClient.get(url);
     },
     updateProfile: (userUpdateProfile: UserUpdateProfile) => {
