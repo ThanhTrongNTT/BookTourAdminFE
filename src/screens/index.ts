@@ -5,11 +5,11 @@ import ListLocation from './list/ListLocation';
 import ListBooking from './list/ListBooking';
 import ListTour from './list/ListTour';
 import DetailUser from './detail/DetailUser';
-import DetailCategory from './detail/DetailCategory';
-import DetailPost from './detail/DetailPost';
+import DetailLocation from './detail/DetailLocation';
+import DetailTour from './detail/DetailTour';
 import NewUser from './new/NewUser';
-import NewCategory from './new/NewCategory';
-import NewPost from './new/NewPost';
+import NewLocation from './new/NewLocation';
+import NewTour from './new/NewTour';
 
 export {
     Home,
@@ -20,8 +20,8 @@ export {
     ListLocation,
     ListBooking,
     ListTour,
-    DetailCategory,
-    DetailPost,
-    NewCategory,
-    NewPost,
+    DetailLocation,
+    DetailTour,
+    NewLocation,
+    NewTour,
 };

@@ -1,15 +1,15 @@
-import { Avatar, Pagination } from 'flowbite-react';
+import { Avatar, Modal, Pagination } from 'flowbite-react';
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import userApi from '~/api/user.api';
-import { IconAdd } from '~/components/icon/Icon';
+import NewUser from '../new/NewUser';
 
 const List = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [users, setUsers] = useState<any>([]);
     const [totalPages, setTotalPages] = useState(1);
     const [response, setResponse] = useState<any>();
+    const [isModal, setIsModal] = useState(false);
     const onPageChange = (page: number) => {
         userApi.getUsers(page - 1).then((users) => {
             setUsers(users.data);
@@ -29,12 +29,13 @@ const List = () => {
             pauseOnHover: false,
         });
 
-    const toastMessage = async () => {
-        toast.success('Edit View!', {
-            delay: 50,
-            draggable: false,
-            pauseOnHover: false,
-        });
+    const onEdit = () => {
+        setIsModal(!isModal);
+        // toast.success('Edit View!', {
+        //     delay: 50,
+        //     draggable: false,
+        //     pauseOnHover: false,
+        // });
     };
     useEffect(() => {
         const getData = async () => {
@@ -49,15 +50,29 @@ const List = () => {
     return (
         <>
             <div className='p-2'>
-                <div className='px-10 mx-10 w-full flex justify-end'>
-                    <Link to={'new'}>
-                        <button className='flex items-center text-black bg-white p-1 mx-8 my-2 rounded-2xl border border-gray-c4'>
-                            <IconAdd />
-
-                            <span className='flex items-center mr-2'>Add New</span>
+                {/* <div>
+                    <button
+                        className='flex items-center text-black bg-white p-1 mx-8 my-2 rounded-2xl border border-gray-c4'
+                        onClick={() => {
+                            setIsModal(true);
+                        }}
+                    >
+                        <IconAdd />
+                        <span className='flex items-center mr-2'>Add New</span>
+                    </button>
+                </div> */}
+                <Modal show={isModal} size='lg' popup={true} onClose={onEdit}>
+                    <Modal.Header />
+                    <Modal.Body>
+                        <NewUser />
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <button onClick={onEdit}>I accept</button>
+                        <button color='gray' onClick={onEdit}>
+                            Decline
                         </button>
-                    </Link>
-                </div>
+                    </Modal.Footer>
+                </Modal>
                 <div className='overflow-x-auto rounded-2xl mx-8 border border-gray-c4'>
                     <table className='bg-white  w-[100%] text-sm text-left text-gray-400 '>
                         <thead className='text-xs uppercase bg-white text-gray-c6  border-b border-secondary'>
@@ -106,7 +121,7 @@ const List = () => {
                                     <td className='py-4 px-6 text-gray-c8'>
                                         <button
                                             className='text-green-500 font-semibold uppercase'
-                                            onClick={() => toastMessage()}
+                                            onClick={onEdit}
                                         >
                                             <span>Edit</span>
                                         </button>

@@ -1,15 +1,19 @@
-import { Pagination } from 'flowbite-react';
+import { Modal, Pagination } from 'flowbite-react';
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import locationApi from '~/api/location.api';
 import { IconAdd } from '~/components/icon/Icon';
+import NewLocation from '../new/NewLocation';
 
 const ListLocation = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [locations, setLocations] = useState<any>([]);
     const [totalPages, setTotalPages] = useState(1);
     const [response, setResponse] = useState<any>();
+    const [isModal, setIsModal] = useState(false);
+    const onClose = () => {
+        setIsModal(!isModal);
+    };
     const onPageChange = (page: number) => {
         console.log(page);
 
@@ -30,7 +34,8 @@ const ListLocation = () => {
             pauseOnHover: false,
         });
 
-    const toastMessage = async () => {
+    const handleEdit = async () => {
+        setIsModal(!isModal);
         toast.success('Edit View!', {
             delay: 50,
             draggable: false,
@@ -50,14 +55,29 @@ const ListLocation = () => {
     return (
         <>
             <div className='p-2'>
-                <div className='px-10 mx-10 w-full flex justify-end'>
-                    <Link to={'new'}>
-                        <button className='flex items-center text-black bg-white p-1 mx-8 my-2 rounded-2xl border border-gray-c4'>
-                            <IconAdd />
-                            <span className='flex items-center mr-2'>Add New</span>
-                        </button>
-                    </Link>
+                <div>
+                    <button
+                        className='flex items-center text-black bg-white p-1 mx-8 my-2 rounded-2xl border border-gray-c4'
+                        onClick={() => {
+                            setIsModal(true);
+                        }}
+                    >
+                        <IconAdd />
+                        <span className='flex items-center mr-2'>Add New</span>
+                    </button>
                 </div>
+                <Modal show={isModal} size='lg' popup={true} onClose={onClose}>
+                    <Modal.Header />
+                    <Modal.Body>
+                        <NewLocation />
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <button onClick={onClose}>I accept</button>
+                        <button color='gray' onClick={onClose}>
+                            Decline
+                        </button>
+                    </Modal.Footer>
+                </Modal>
                 <div className='overflow-x-auto rounded-2xl mx-8 border border-gray-c4'>
                     <table className='bg-white  w-[100%] text-sm text-left text-gray-400 '>
                         <thead className='text-xs uppercase bg-white text-gray-c6  border-b border-secondary'>
@@ -91,13 +111,13 @@ const ListLocation = () => {
                                     <td className='py-4 px-6 text-gray-c8'>
                                         <button
                                             className='text-green-500 font-semibold uppercase'
-                                            onClick={() => toastMessage()}
+                                            onClick={handleEdit}
                                         >
                                             <span>Edit</span>
                                         </button>
                                         <button
                                             className='ml-2 text-red-500 font-semibold uppercase'
-                                            onClick={() => handleDelete()}
+                                            onClick={handleDelete}
                                         >
                                             <span>Delete</span>
                                         </button>

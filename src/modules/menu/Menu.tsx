@@ -1,5 +1,6 @@
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { IconMyProfile, IconSigout } from '~/components/icon/Icon';
 import WrapperMenu from '~/components/wrapper/WrapperMenu';
 import { update } from '~/redux/userSlice';
@@ -8,11 +9,18 @@ const Menu = () => {
     const dispatch = useDispatch();
     const handlerLogout = () => {
         sessionStorage.clear();
+        toast.success(`Logout success!`, {
+            autoClose: 500,
+            delay: 10,
+            draggable: true,
+            pauseOnHover: false,
+        });
         dispatch(
             update({
                 userInfo: null,
             }),
         );
+
         window.location.reload();
     };
     return (

@@ -2,19 +2,19 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import LayoutDefault from '~/layouts/LayoutDefault';
 import PrivateRoute from '~/routes/privateRoute';
 import {
-    DetailCategory,
-    DetailPost,
+    DetailLocation,
+    DetailTour,
     DetailUser,
     Home,
+    ListBooking,
+    ListLocation,
+    ListTour,
     ListUser,
     Login,
-    ListLocation,
-    ListBooking,
-    ListTour,
-    NewPost,
+    NewLocation,
+    NewTour,
     NewUser,
 } from '~/screens';
-import NewCategory from '~/screens/new/NewCategory';
 import NotFound from '~/screens/notFound/NotFound';
 const DeclareRouter = () => {
     return (
@@ -32,18 +32,18 @@ const DeclareRouter = () => {
                         </Route>
                         <Route path='locations'>
                             <Route index element={<ListLocation />} />
-                            <Route path=':locationId' element={<DetailCategory />} />
-                            <Route path='new' element={<NewCategory />} />
+                            <Route path=':locationId' element={<DetailLocation />} />
+                            <Route path='new' element={<NewLocation />} />
                         </Route>
                         <Route path='tours'>
                             <Route index element={<ListTour />} />
-                            <Route path=':tourId' element={<DetailPost />} />
-                            <Route path='new' element={<NewPost />} />
+                            <Route path=':tourId' element={<DetailTour />} />
+                            <Route path='new' element={<NewTour />} />
                         </Route>
                         <Route path='bookings'>
                             <Route index element={<ListBooking />} />
-                            <Route path=':bookingId' element={<DetailPost />} />
-                            <Route path='new' element={<NewPost />} />
+                            <Route path=':bookingId' element={<DetailTour />} />
+                            <Route path='new' element={<NewTour />} />
                         </Route>
                         <Route path='analysis'>
                             <Route index element={<NotFound />} />

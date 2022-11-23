@@ -9,7 +9,6 @@ import Menu from './menu/Menu';
 
 const Navbar = () => {
     const { userInfo } = useSelector((state: RootState) => state.users);
-    let userName = userInfo?.fullName.split(' ');
 
     const admin = queryString.parse(sessionStorage.getItem('admin') ?? '');
     return (

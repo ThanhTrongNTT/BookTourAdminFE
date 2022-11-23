@@ -1,8 +1,5 @@
-import { useForm } from 'react-hook-form';
-import Field from '~/components/field/Field';
-
 const NewUser = () => {
-    const { handleSubmit, control, setValue } = useForm();
+    // const { handleSubmit, control, setValue } = useForm();
     return (
         <div className='max-w-5xl mx-auto'>
             <form className='mt-10'>

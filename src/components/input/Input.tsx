@@ -5,13 +5,13 @@ import ErrorBoundary from '../common/ErrorBoundary';
 import classNames from '~/utils/classNames';
 
 type InputProps = {
-    pointer: any;
+    pointer?: any;
     variant: any;
-    children: any;
+    children?: any;
     control: any;
     name: any;
     type: any;
-    error: string;
+    error: any;
     placeholder: string;
 };
 const Input = ({
@@ -31,7 +31,7 @@ const Input = ({
         defaultValue: '',
     });
     let defaultClasses =
-        'text-sm font-medium font-Poppins transition-all w-full dark:border-dark-stroke dark:text-white ';
+        'text-sm font-medium font-Poppins transition-all w-full dark:border-dark-stroke dark:text-black ';
     switch (variant) {
         case 'outlined':
             defaultClasses += 'rounded-xl border bg-transparent px-6 py-4 text-c3';
@@ -49,9 +49,10 @@ const Input = ({
                 type={type}
                 className={classNames(
                     defaultClasses,
-                    error.length > 0 ? 'border-primary-red text-primary-red' : 'border-c6 text-c3',
+                    error.length > 0 ? 'border-red-700 text-red-700' : 'border-gray-c3 text-black',
                     children ? 'pr-16' : '',
                     pointer && 'cursor-pointer',
+                    // 'focus:border-gray-c6 transition-all px-3 py-3 m-2',
                 )}
                 placeholder={error.length > 0 ? '' : placeholder}
                 {...field}
