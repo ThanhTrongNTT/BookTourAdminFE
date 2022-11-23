@@ -16,7 +16,9 @@ body {
 }
 
 @layer {
-    input {
+
+    input,
+    select {
         @apply outline-none;
     }
 }

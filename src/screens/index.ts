@@ -8,9 +8,8 @@ import DetailUser from './detail/DetailUser';
 import DetailCategory from './detail/DetailCategory';
 import DetailPost from './detail/DetailPost';
 import NewUser from './new/NewUser';
-import NewCategory from './new/NewCategory';
+import NewLocation from './new/NewLocation';
 import NewPost from './new/NewPost';
-
 export {
     Home,
     ListUser,
@@ -22,6 +21,6 @@ export {
     ListTour,
     DetailCategory,
     DetailPost,
-    NewCategory,
+    NewLocation as NewCategory,
     NewPost,
 };

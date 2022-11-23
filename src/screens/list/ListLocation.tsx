@@ -54,7 +54,9 @@ const ListLocation = () => {
                     <Link to={'new'}>
                         <button className='flex items-center text-black bg-white p-1 mx-8 my-2 rounded-2xl border border-gray-c4'>
                             <IconAdd />
-                            <span className='flex items-center mr-2'>Add New</span>
+                            <span className='flex items-center mr-2'>
+                                Add New
+                            </span>
                         </button>
                     </Link>
                 </div>
@@ -117,9 +119,6 @@ const ListLocation = () => {
                         onPageChange={onPageChange}
                     />
                 </div>
-                {/* ) : (
-                    ''
-                )} */}
             </div>
         </>
     );
