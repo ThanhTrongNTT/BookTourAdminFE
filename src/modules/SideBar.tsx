@@ -23,7 +23,7 @@ const SideBar = () => {
             icon: <IconBlog />,
         },
         { title: 'Tours', link: 'tours', icon: <IconCourse /> },
-        { title: 'Courses', link: 'courses', icon: <IconCategory /> },
+        { title: 'Bookings', link: 'bookings', icon: <IconCategory /> },
         { title: 'Comments', link: 'comments', icon: <IconComment /> },
         {
             title: 'Analysis',
