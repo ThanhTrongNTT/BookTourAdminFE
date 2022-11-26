@@ -10,6 +10,10 @@ const locationApi = {
         const url = `location/${id}`;
         return AxiosClient.get(url);
     },
+    getLocationByType: (typeName: string) => {
+        const url = `locations/type?typeName=${typeName}`;
+        return AxiosClient.get(url);
+    },
     saveLocation: (location: Location) => {
         const url = `location/save`;
         return AxiosClient.post(url, location);
@@ -19,7 +23,7 @@ const locationApi = {
         return AxiosClient.put(url, location);
     },
     delete: (id: string) => {
-        const url = `location/${id}`;
+        const url = `location/delete/${id}`;
         return AxiosClient.delete(url);
     },
 };

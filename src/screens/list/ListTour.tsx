@@ -1,23 +1,23 @@
 import { Modal, Pagination } from 'flowbite-react';
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import tourApi from '~/api/tour.api';
 import { IconAdd } from '~/components/icon/Icon';
 import NewTour from '../new/NewTour';
 
 const ListTour = () => {
+    const navigate = useNavigate();
     const [currentPage, setCurrentPage] = useState(1);
     const [tours, setTours] = useState([]);
     const [totalPages, setTotalPages] = useState(1);
     const [response, setResponse] = useState<any>();
     const [isModal, setIsModal] = useState(false);
+    const [isDelete, setIsDelete] = useState(false);
     const onClose = () => {
         setIsModal(!isModal);
     };
     const onPageChange = (page: number) => {
-        console.log(page);
-
         tourApi.getTours(page - 1).then((reponse) => {
             setTours(reponse.data);
         });
@@ -28,15 +28,21 @@ const ListTour = () => {
             setTotalPages(response.totalPages);
         }
     }
-    const handleDelete = () =>
-        toast.success('Delete Success!', {
-            delay: 50,
-            draggable: true,
-            pauseOnHover: false,
+    const handleDelete = () => setIsDelete(!isDelete);
+    const handleDeleteSuccess = (id: string) => {
+        tourApi.deleteTour(id).then((response) => {
+            toast.success('Delete Success!', {
+                delay: 50,
+                draggable: true,
+                pauseOnHover: false,
+            });
+            setIsDelete(!isDelete);
+            window.location.reload();
         });
+    };
 
-    const handleEdit = async () => {
-        setIsModal(!isModal);
+    const handleEdit = async (id: string) => {
+        navigate(`${id}`);
         toast.success('Edit View!', {
             delay: 50,
             draggable: false,
@@ -72,12 +78,6 @@ const ListTour = () => {
                     <Modal.Body>
                         <NewTour />
                     </Modal.Body>
-                    <Modal.Footer>
-                        <button onClick={onClose}>I accept</button>
-                        <button color='gray' onClick={onClose}>
-                            Decline
-                        </button>
-                    </Modal.Footer>
                 </Modal>
                 <div className='overflow-x-auto rounded-2xl mx-8 border border-gray-c4'>
                     <table className='bg-white  w-[100%] text-sm text-left text-gray-400 '>
@@ -120,10 +120,40 @@ const ListTour = () => {
                                         className='py-4 px-6 font-medium text-black whitespace-nowrap'
                                     >
                                         <img
-                                            src='https://flowbite.com/docs/images/people/profile-picture-5.jpg'
+                                            // src='https://flowbite.com/docs/images/people/profile-picture-5.jpg'
+                                            src={
+                                                tour.tourDetail.images[0] ??
+                                                'https://flowbite.com/docs/images/people/profile-picture-5.jpg'
+                                            }
                                             alt=''
                                         />
                                     </th>
+                                    <Modal
+                                        show={isDelete}
+                                        size='lg'
+                                        popup={true}
+                                        onClose={handleDelete}
+                                    >
+                                        <Modal.Header />
+                                        <Modal.Body>
+                                            <div className='text-center'>
+                                                <h3 className='mb-5 text-lg font-normal text-gray-500 dark:text-gray-400'>
+                                                    Are you sure you want to delete this product?
+                                                </h3>
+                                                <div className='flex justify-center gap-4 text-warning'>
+                                                    <button
+                                                        color='failure'
+                                                        onClick={() => handleDeleteSuccess(tour.id)}
+                                                    >
+                                                        Yes, I'm sure
+                                                    </button>
+                                                    <button color='gray' onClick={handleDelete}>
+                                                        No, cancel
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </Modal.Body>
+                                    </Modal>
                                     <th
                                         scope='row'
                                         className='py-4 px-6 font-medium text-black whitespace-wrap w-[380px]'
@@ -159,7 +189,7 @@ const ListTour = () => {
                                         <div className='flex flex-col'>
                                             <button
                                                 className='text-green-500 font-semibold uppercase my-2'
-                                                onClick={handleEdit}
+                                                onClick={() => handleEdit(tour.id)}
                                             >
                                                 <span>Edit</span>
                                             </button>

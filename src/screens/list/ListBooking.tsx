@@ -11,14 +11,6 @@ const ListBooking = () => {
     return (
         <>
             <div className='p-2'>
-                <div className='px-10 mx-10 w-full flex justify-end'>
-                    <Link to={'new'}>
-                        <button className='flex items-center text-black bg-white p-1 mx-8 my-2 rounded-2xl border border-gray-c4'>
-                            <IconAdd />
-                            <span className='flex items-center mr-2'>Add New</span>
-                        </button>
-                    </Link>
-                </div>
                 <div className='overflow-x-auto rounded-2xl mx-8 border border-gray-c4'>
                     <table className='bg-white  w-[100%] text-sm text-left text-gray-400 '>
                         <thead className='text-xs uppercase bg-white text-gray-c6  border-b border-secondary'>

@@ -22,30 +22,30 @@ export interface Address {
 }
 
 export interface Tour {
-    id: string;
-    hotelRoom: number;
-    flightClass: number;
-    tourDetail: TourDetail;
-    type: string;
+    id?: string;
+    hotelRoom?: number;
+    flightClass?: number;
+    tourDetail?: TourDetail;
+    type?: string;
 }
 export interface TourDetail {
-    tourName: string;
-    tourDes: string;
-    price: number;
-    images: string[];
-    startDay: string;
-    endDay: string;
-    beginningLocation: {
+    tourName?: string;
+    tourDes?: string;
+    price?: number;
+    images?: string[];
+    startDay?: string;
+    endDay?: string;
+    beginningLocation?: {
         locationName: string;
         locationType: 'BEGINNING';
     };
-    destinationLocation: {
+    destinationLocation?: {
         locationName: string;
         locationType: 'DESTINATION';
     };
 }
 export interface Location {
-    id: string;
+    id?: string;
     locationName: string;
     locationType: string;
 }

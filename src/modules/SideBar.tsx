@@ -24,18 +24,18 @@ const SideBar = () => {
         },
         { title: 'Tours', link: 'tours', icon: <IconCourse /> },
         { title: 'Bookings', link: 'bookings', icon: <IconCategory /> },
-        { title: 'Comments', link: 'comments', icon: <IconComment /> },
-        {
-            title: 'Analysis',
-            link: 'analysis',
-            icon: <IconAnalytic />,
-            submenu: true,
-            submenuItems: [
-                { id: 0, title: 'Users', link: 'user' },
-                { id: 1, title: 'Posts', link: 'post' },
-                { id: 2, title: 'Comments', link: 'comment' },
-            ],
-        },
+        // { title: 'Comments', link: 'comments', icon: <IconComment /> },
+        // {
+        //     title: 'Analysis',
+        //     link: 'analysis',
+        //     icon: <IconAnalytic />,
+        //     submenu: true,
+        //     submenuItems: [
+        //         { id: 0, title: 'Users', link: 'user' },
+        //         { id: 1, title: 'Posts', link: 'post' },
+        //         { id: 2, title: 'Comments', link: 'comment' },
+        //     ],
+        // },
     ];
     const [submenuOpen, setSubmenuOpen] = useState(false);
     return (
@@ -64,13 +64,13 @@ const SideBar = () => {
                                     </span>
                                 </Link>
 
-                                {menu.submenu && (
+                                {/* {menu.submenu && (
                                     <span onClick={() => setSubmenuOpen(!submenuOpen)}>
                                         {!submenuOpen ? <IconArrowDown /> : <IconArrowUp />}
                                     </span>
-                                )}
+                                )} */}
                             </li>
-                            {menu.submenu && submenuOpen && (
+                            {/* {menu.submenu && submenuOpen && (
                                 <ul>
                                     {menu.submenuItems.map((submenuItem, index) => (
                                         <Link to={`analysis/${submenuItem.link}`}>
@@ -83,7 +83,7 @@ const SideBar = () => {
                                         </Link>
                                     ))}
                                 </ul>
-                            )}
+                            )} */}
                         </>
                     ))}
                 </ul>

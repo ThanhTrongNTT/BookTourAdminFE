@@ -1,5 +1,6 @@
 import { Modal, Pagination } from 'flowbite-react';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import locationApi from '~/api/location.api';
 import { IconAdd } from '~/components/icon/Icon';
@@ -11,6 +12,8 @@ const ListLocation = () => {
     const [totalPages, setTotalPages] = useState(1);
     const [response, setResponse] = useState<any>();
     const [isModal, setIsModal] = useState(false);
+    const [isDelete, setIsDelete] = useState(false);
+    const navigate = useNavigate();
     const onClose = () => {
         setIsModal(!isModal);
     };
@@ -27,15 +30,22 @@ const ListLocation = () => {
             setTotalPages(response.totalPages);
         }
     }
-    const handleDelete = () =>
-        toast.success('Delete Success!', {
-            delay: 50,
-            draggable: true,
-            pauseOnHover: false,
+    const handleDelete = () => setIsDelete(!isDelete);
+    const handleDeleteSuccess = (id: string) => {
+        locationApi.delete(id).then((response) => {
+            toast.success('Delete Success!', {
+                delay: 50,
+                draggable: true,
+                pauseOnHover: false,
+            });
+            setIsDelete(!isDelete);
+            window.location.reload();
         });
+    };
 
-    const handleEdit = async () => {
-        setIsModal(!isModal);
+    const handleEdit = async (id: string) => {
+        // setIsModal(!isModal);
+        navigate(`${id}`);
         toast.success('Edit View!', {
             delay: 50,
             draggable: false,
@@ -71,13 +81,8 @@ const ListLocation = () => {
                     <Modal.Body>
                         <NewLocation />
                     </Modal.Body>
-                    <Modal.Footer>
-                        <button onClick={onClose}>I accept</button>
-                        <button color='gray' onClick={onClose}>
-                            Decline
-                        </button>
-                    </Modal.Footer>
                 </Modal>
+
                 <div className='overflow-x-auto rounded-2xl mx-8 border border-gray-c4'>
                     <table className='bg-white  w-[100%] text-sm text-left text-gray-400 '>
                         <thead className='text-xs uppercase bg-white text-gray-c6  border-b border-secondary'>
@@ -101,6 +106,35 @@ const ListLocation = () => {
                                         className='py-4 px-6 font-medium text-black whitespace-nowrap'
                                     >
                                         {location.locationName}
+                                        <Modal
+                                            show={isDelete}
+                                            size='lg'
+                                            popup={true}
+                                            onClose={handleDelete}
+                                        >
+                                            <Modal.Header />
+                                            <Modal.Body>
+                                                <div className='text-center'>
+                                                    <h3 className='mb-5 text-lg font-normal text-gray-500 dark:text-gray-400'>
+                                                        Are you sure you want to delete this
+                                                        product?
+                                                    </h3>
+                                                    <div className='flex justify-center gap-4 text-warning'>
+                                                        <button
+                                                            color='failure'
+                                                            onClick={() =>
+                                                                handleDeleteSuccess(location.id)
+                                                            }
+                                                        >
+                                                            Yes, I'm sure
+                                                        </button>
+                                                        <button color='gray' onClick={handleDelete}>
+                                                            No, cancel
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </Modal.Body>
+                                        </Modal>
                                     </th>
                                     <th
                                         scope='row'
@@ -111,7 +145,7 @@ const ListLocation = () => {
                                     <td className='py-4 px-6 text-gray-c8'>
                                         <button
                                             className='text-green-500 font-semibold uppercase'
-                                            onClick={handleEdit}
+                                            onClick={() => handleEdit(location.id)}
                                         >
                                             <span>Edit</span>
                                         </button>
