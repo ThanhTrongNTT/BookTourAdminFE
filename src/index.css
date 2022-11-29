@@ -16,6 +16,9 @@ body {
 }
 
 @layer {
+    /* html {
+        @apply h-full bg-gradient-to-r from-orange-400 via-red-500 to-pink-500 bg-repeat-y;
+    } */
 
     input,
     select {

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import WrapperField from '~/components/common/WrapperField';
 import Dropdown from '~/components/dropdown/Dropdown';
@@ -18,10 +18,11 @@ const NewLocation = () => {
     const handleCancel = () => {
         reset({
             locationName: '',
-            locationType: 'Choose Role',
+            // locationType: 'Choose Role',
         });
         setDisable(true);
     };
+
     if (isSubmitSuccessful) handleCancel();
 
     const onSubmit = (values: object) => console.log(values);
@@ -31,7 +32,7 @@ const NewLocation = () => {
             <form
                 onSubmit={handleSubmit(onSubmit)}
                 className=''
-                // onChange={() => setDisable(false)}
+                onChange={() => setDisable(false)}
             >
                 <div className='px-10 py-10 pb-5 mt-16 w-[800px] bg-white rounded-md'>
                     <h1 className='font-bold text-3xl mb-7 text-center'>

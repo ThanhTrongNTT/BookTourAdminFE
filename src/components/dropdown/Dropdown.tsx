@@ -33,7 +33,10 @@ const Dropdown = ({
         <select
             defaultValue={dropdownLabel}
             onChange={handleGetValue}
-            className={classNames('px-5 py-3 rounded-md border border-c6', className)}
+            className={classNames(
+                'px-5 py-3 rounded-md border border-c6',
+                className,
+            )}
         >
             <option value={dropdownLabel} disabled>
                 {dropdownLabel}

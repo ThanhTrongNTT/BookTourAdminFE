@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import ButtonCancel from '~/components/button/ButtonCancel';
+import ButtonSubmit from '~/components/button/ButtonSubmit';
 import WrapperField from '~/components/common/WrapperField';
 import Dropdown from '~/components/dropdown/Dropdown';
 import { IconTrash } from '~/components/icon/Icon';
@@ -147,27 +149,11 @@ const NewUser = () => {
                     </div>
                     <div className='text-right mt-5'>
                         <div className='flex items-center justify-end'>
-                            <button
-                                type='button'
+                            <ButtonCancel
                                 onClick={handleCancel}
-                                className={classNames(
-                                    'text-lg font-semibold text-orange-400 mr-4 px-6 py-2 rounded-md  flex items-center justify-center gap-2  transition-all',
-                                    disable
-                                        ? 'bg-gray-100 !text-gray-c6 border !border-transparent cursor-no-drop pointer-events-none select-none'
-                                        : 'hover:text-white hover:bg-gradient-to-br hover:from-orange-500  border border-orange-300 hover:to-pink-500',
-                                )}
-                            >
-                                <span className='leading-none'>
-                                    <IconTrash />
-                                </span>
-                                Cancle
-                            </button>
-                            <button
-                                type='submit'
-                                className='text-white px-5 py-2 bg-gradient-to-br from-orange-500 to-pink-500 text-lg font-semibold rounded-md hover:bg-gradient-to-br hover:from-orange-600 hover:to-pink-600'
-                            >
-                                Add user
-                            </button>
+                                disable={disable}
+                            />
+                            <ButtonSubmit>Add User</ButtonSubmit>
                         </div>
                     </div>
                 </div>

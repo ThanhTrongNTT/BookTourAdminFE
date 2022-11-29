@@ -10,8 +10,10 @@ import DetailPost from './detail/DetailPost';
 import NewUser from './new/NewUser';
 import NewLocation from './new/NewLocation';
 import NewPost from './new/NewPost';
+import ProfilePage from './profile/ProfilePage';
 export {
     Home,
+    ProfilePage,
     ListUser,
     DetailUser,
     NewUser,
