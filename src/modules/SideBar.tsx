@@ -12,6 +12,7 @@ import {
     IconAnalytic,
 } from '~/components/icon/Icon';
 import Logo from '~/components/logo/Logo';
+import LogoDefault from '~/components/logo/LogoDefault';
 
 const SideBar = () => {
     const Menus = [
@@ -41,10 +42,11 @@ const SideBar = () => {
     return (
         <div className='bg-white h-fit rounded-xl m-4 w-20 lg:w-60 fixed top-0'>
             <div className='flex justify-center p-10'>
-                <Logo />
-                <Link to={'/admin'}>
+                {/* <Logo /> */}
+                {/* <Link to={'/admin'}>
                     <h1 className='text-sm font-OpenSans font-bold'>Teaching Me</h1>
-                </Link>
+                </Link> */}
+                <LogoDefault />
             </div>
             <hr className='mx-6 border-1.5 border-gray-c2' />
             <div className='px-6'>

@@ -55,8 +55,8 @@ const NewLocation = () => {
                     draggable: false,
                     pauseOnHover: false,
                 });
+                window.location.reload();
             });
-            window.location.reload();
         }
     };
 

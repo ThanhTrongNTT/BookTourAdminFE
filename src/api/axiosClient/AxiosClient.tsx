@@ -38,6 +38,13 @@ AxiosClient.interceptors.response.use(
                 draggable: true,
                 pauseOnHover: false,
             });
+        } else {
+            toast.error(error.response.data.message, {
+                autoClose: 500,
+                delay: 10,
+                draggable: true,
+                pauseOnHover: false,
+            });
         }
 
         const prevRequest = error.config;

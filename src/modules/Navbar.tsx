@@ -1,5 +1,6 @@
 import Tippy from '@tippyjs/react/headless';
 import queryString from 'query-string';
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Avt from '~/components/avt/Avt';
@@ -9,7 +10,6 @@ import Menu from './menu/Menu';
 
 const Navbar = () => {
     const { userInfo } = useSelector((state: RootState) => state.users);
-
     const admin = queryString.parse(sessionStorage.getItem('admin') ?? '');
     return (
         <>
@@ -36,7 +36,10 @@ const Navbar = () => {
                         <div className='flex items-center gap-2'>
                             <Avt
                                 sx='default'
-                                src='https://images.unsplash.com/photo-1441123694162-e54a981ceba5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80'
+                                src={
+                                    userInfo?.avatar.replaceAll('"', '') ||
+                                    'https://images.unsplash.com/photo-1441123694162-e54a981ceba5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80'
+                                }
                             />
                             <div className='flex items-center'>
                                 <p className='text-white'>{userInfo?.fullName}</p>

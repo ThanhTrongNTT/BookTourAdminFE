@@ -16,12 +16,14 @@ import {
     NewUser,
 } from '~/screens';
 import NotFound from '~/screens/notFound/NotFound';
+import ProfilePage from '~/screens/profile/ProfilePage';
 const DeclareRouter = () => {
     return (
         <div className='bg-gradient-to-r from-orange-400 via-red-500 to-pink-500 bg-repeat h-screen'>
             <Routes>
                 <Route path='/' element={<Navigate to='/admin' />} />
                 <Route path='/login' element={<Login />} />
+                <Route path='profile' element={<ProfilePage />} />
                 <Route path='/admin' element={<PrivateRoute />}>
                     <Route element={<LayoutDefault />}>
                         <Route path='' element={<Home />} />

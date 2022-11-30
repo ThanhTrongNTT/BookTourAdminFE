@@ -1,8 +1,10 @@
 import { Modal, Pagination } from 'flowbite-react';
+import { ModalHeader } from 'flowbite-react/lib/esm/components/Modal/ModalHeader';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import locationApi from '~/api/location.api';
+import Dialog from '~/components/dialog/Dialog';
 import { IconAdd } from '~/components/icon/Icon';
 import NewLocation from '../new/NewLocation';
 
@@ -13,13 +15,22 @@ const ListLocation = () => {
     const [response, setResponse] = useState<any>();
     const [isModal, setIsModal] = useState(false);
     const [isDelete, setIsDelete] = useState(false);
+    const [idDelete, setIdDelete] = useState('');
     const navigate = useNavigate();
+
+    const getData = async (page: number) => {
+        await locationApi.getLocation(page - 1).then((reponse) => {
+            setResponse(reponse);
+            setLocations(reponse.data);
+        });
+    };
     const onClose = () => {
         setIsModal(!isModal);
     };
+    const deleteClose = () => {
+        setIsDelete(!isDelete);
+    };
     const onPageChange = (page: number) => {
-        console.log(page);
-
         locationApi.getLocation(page - 1).then((reponse) => {
             setLocations(reponse.data);
         });
@@ -30,21 +41,25 @@ const ListLocation = () => {
             setTotalPages(response.totalPages);
         }
     }
-    const handleDelete = () => setIsDelete(!isDelete);
-    const handleDeleteSuccess = (id: string) => {
-        locationApi.delete(id).then((response) => {
-            toast.success('Delete Success!', {
-                delay: 50,
-                draggable: true,
-                pauseOnHover: false,
-            });
-            setIsDelete(!isDelete);
-            window.location.reload();
+    const handleDelete = (id: string) => {
+        setIsDelete(!isDelete);
+        setIdDelete(id);
+    };
+    const handleDeleteSuccess = async (id: string) => {
+        await locationApi.delete(id).then((response) => {
+            if (response.status === 200)
+                toast.success('Delete Success!', {
+                    autoClose: 500,
+                    delay: 50,
+                    draggable: true,
+                    pauseOnHover: false,
+                });
         });
+        setIsDelete(!isDelete);
+        getData(currentPage);
     };
 
     const handleEdit = async (id: string) => {
-        // setIsModal(!isModal);
         navigate(`${id}`);
         toast.success('Edit View!', {
             delay: 50,
@@ -53,13 +68,7 @@ const ListLocation = () => {
         });
     };
     useEffect(() => {
-        const getData = async () => {
-            await locationApi.getLocation(currentPage - 1).then((reponse) => {
-                setResponse(reponse);
-                setLocations(reponse.data);
-            });
-        };
-        getData();
+        getData(currentPage);
     }, []);
 
     return (
@@ -82,7 +91,27 @@ const ListLocation = () => {
                         <NewLocation />
                     </Modal.Body>
                 </Modal>
-
+                <Modal show={isDelete} size='lg' popup={true} onClose={deleteClose}>
+                    <Modal.Header />
+                    <Modal.Body>
+                        <div className='text-center'>
+                            <h3 className='mb-5 text-lg font-normal text-gray-500 dark:text-gray-400'>
+                                Are you sure you want to delete this location?
+                            </h3>
+                            <div className='flex justify-center gap-4 text-warning'>
+                                <button
+                                    color='failure'
+                                    onClick={() => handleDeleteSuccess(idDelete)}
+                                >
+                                    Yes, I'm sure
+                                </button>
+                                <button color='gray' onClick={deleteClose}>
+                                    No, cancel
+                                </button>
+                            </div>
+                        </div>
+                    </Modal.Body>
+                </Modal>
                 <div className='overflow-x-auto rounded-2xl mx-8 border border-gray-c4'>
                     <table className='bg-white  w-[100%] text-sm text-left text-gray-400 '>
                         <thead className='text-xs uppercase bg-white text-gray-c6  border-b border-secondary'>
@@ -100,63 +129,37 @@ const ListLocation = () => {
                         </thead>
                         <tbody>
                             {locations.map((location: any, index: number) => (
-                                <tr className='bg-white hover:bg-gray-c2 cursor-pointer'>
-                                    <th
-                                        scope='row'
-                                        className='py-4 px-6 font-medium text-black whitespace-nowrap'
-                                    >
-                                        {location.locationName}
-                                        <Modal
-                                            show={isDelete}
-                                            size='lg'
-                                            popup={true}
-                                            onClose={handleDelete}
+                                <>
+                                    <tr className='bg-white hover:bg-gray-c2 cursor-pointer'>
+                                        <th
+                                            scope='row'
+                                            className='py-4 px-6 font-medium text-black whitespace-nowrap'
                                         >
-                                            <Modal.Header />
-                                            <Modal.Body>
-                                                <div className='text-center'>
-                                                    <h3 className='mb-5 text-lg font-normal text-gray-500 dark:text-gray-400'>
-                                                        Are you sure you want to delete this
-                                                        product?
-                                                    </h3>
-                                                    <div className='flex justify-center gap-4 text-warning'>
-                                                        <button
-                                                            color='failure'
-                                                            onClick={() =>
-                                                                handleDeleteSuccess(location.id)
-                                                            }
-                                                        >
-                                                            Yes, I'm sure
-                                                        </button>
-                                                        <button color='gray' onClick={handleDelete}>
-                                                            No, cancel
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </Modal.Body>
-                                        </Modal>
-                                    </th>
-                                    <th
-                                        scope='row'
-                                        className='py-4 px-6 font-medium text-success whitespace-nowrap'
-                                    >
-                                        {location.locationType}
-                                    </th>
-                                    <td className='py-4 px-6 text-gray-c8'>
-                                        <button
-                                            className='text-green-500 font-semibold uppercase'
-                                            onClick={() => handleEdit(location.id)}
+                                            {location.locationName}
+                                        </th>
+
+                                        <th
+                                            scope='row'
+                                            className='py-4 px-6 font-medium text-success whitespace-nowrap'
                                         >
-                                            <span>Edit</span>
-                                        </button>
-                                        <button
-                                            className='ml-2 text-red-500 font-semibold uppercase'
-                                            onClick={handleDelete}
-                                        >
-                                            <span>Delete</span>
-                                        </button>
-                                    </td>
-                                </tr>
+                                            {location.locationType}
+                                        </th>
+                                        <td className='py-4 px-6 text-gray-c8'>
+                                            <button
+                                                className='text-green-500 font-semibold uppercase'
+                                                onClick={() => handleEdit(location.id)}
+                                            >
+                                                <span>Edit</span>
+                                            </button>
+                                            <button
+                                                className='ml-2 text-red-500 font-semibold uppercase'
+                                                onClick={() => handleDelete(location.id)}
+                                            >
+                                                <span>Delete</span>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </>
                             ))}
                         </tbody>
                     </table>

@@ -64,6 +64,7 @@ function Login() {
                 sessionStorage.setItem('refreshToken', data.refreshToken);
                 sessionStorage.setItem('admin', 'true');
                 const userProfile = await userApi.getMe(decode.sub);
+
                 dispatch(update(userProfile));
                 navigate('/admin');
                 toast.success('Login Success!', {

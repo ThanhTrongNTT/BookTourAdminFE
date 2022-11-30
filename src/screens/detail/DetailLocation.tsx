@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useParams } from 'react-router-dom';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import locationApi from '~/api/location.api';
 import WrapperField from '~/components/common/WrapperField';
 import Dropdown from '~/components/dropdown/Dropdown';
@@ -15,6 +15,7 @@ const DetailLocation = () => {
     const [disable, setDisable] = useState(true);
     const [location, setLocation] = useState<any>();
     const locationId = useParams();
+    const navigate = useNavigate();
 
     const {
         handleSubmit,
@@ -40,6 +41,10 @@ const DetailLocation = () => {
     }, []);
     setValue('locationName', location?.locationName);
     const onSubmit = async (values: any) => {
+        const locationUpdate = {
+            locationName: values.locationName,
+            locationType: values.locationType,
+        };
         if (values.locationName === '')
             toast.error('Please fill Location Name!', {
                 autoClose: 1000,
@@ -47,35 +52,35 @@ const DetailLocation = () => {
                 draggable: false,
                 pauseOnHover: false,
             });
-        else if (values.locationType === 'Choose Role') {
-            toast.error('Please choose Location Type!', {
-                autoClose: 1000,
-                delay: 50,
-                draggable: false,
-                pauseOnHover: false,
-            });
-        } else {
-            const locationUpdate = {
-                locationName: values.locationName,
-                locationType: values.locationType,
-            };
-            // console.log(locationUpdate);
-
-            await locationApi
-                .updateLocation(
-                    queryString.stringify(locationId).replace('locationId=', ''),
-                    locationUpdate,
-                )
-                .then((response) => {
-                    toast.success('Update success!', {
-                        autoClose: 1000,
-                        delay: 50,
-                        draggable: false,
-                        pauseOnHover: false,
-                    });
-                });
-            window.location.reload();
+        if (
+            locationUpdate.locationType === 'Choose Role' ||
+            locationUpdate.locationType === undefined
+        ) {
+            // toast.error('Please choose Location Type!', {
+            //     autoClose: 1000,
+            //     delay: 50,
+            //     draggable: false,
+            //     pauseOnHover: false,
+            // });
+            locationUpdate.locationType = location?.locationType;
         }
+
+        console.log(locationUpdate);
+        console.log(queryString.stringify(locationId).replace('locationId=', ''));
+        await locationApi
+            .updateLocation(
+                queryString.stringify(locationId).replace('locationId=', ''),
+                locationUpdate,
+            )
+            .then((response) => {
+                toast.success('Update success!', {
+                    autoClose: 1000,
+                    delay: 50,
+                    draggable: false,
+                    pauseOnHover: false,
+                });
+            });
+        navigate('../');
     };
     return (
         <div className='max-w-5xl mx-auto'>

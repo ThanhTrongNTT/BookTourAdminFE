@@ -11,7 +11,7 @@ import Label from '~/components/label/Label';
 import { Location } from '~/data/Interface';
 import classNames from '~/utils/classNames';
 import queryString from 'query-string';
-import { useParams } from 'react-router-dom';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 const DetailTour = () => {
     const { handleSubmit, control, setValue } = useForm();
     const [images, setImages] = useState<Array<string>>([]);
@@ -22,6 +22,7 @@ const DetailTour = () => {
     const [destination, setDestination] = useState<string | any>([]);
     const [tour, setTour] = useState<any>();
     const tourId = useParams();
+    const navigate = useNavigate();
     const handleChange = (e: any) => {
         for (let i = 0; i < e.target.files.length; i++) {
             const newImage = e.target.files[i];
@@ -59,7 +60,7 @@ const DetailTour = () => {
             .catch((err) => console.log(err));
     };
     const onSubmit = ({ beginningLocation, destinationLocation, type, ...values }: any) => {
-        const tour = {
+        const tourUpdate = {
             tourDetail: {
                 ...values,
                 beginningLocation: {
@@ -74,14 +75,32 @@ const DetailTour = () => {
             },
             type,
         };
-        tourApi
-            .updateTour(tour, queryString.stringify(tourId).replace('tourId=', ''))
-            .then((response) => {
-                toast.success('Update success', {
-                    autoClose: 500,
-                });
-            })
-            .catch((err) => console.log(err));
+
+        if (tourUpdate.tourDetail.beginningLocation.locationName === undefined) {
+            toast.error('PLease choose Beginning Location', {
+                autoClose: 500,
+            });
+        } else if (tourUpdate.tourDetail.destinationLocation.locationName === undefined) {
+            toast.error('PLease choose Destination Location', {
+                autoClose: 500,
+            });
+        } else if (tourUpdate.type === undefined) {
+            toast.error('PLease choose Tour Type', {
+                autoClose: 500,
+            });
+        }
+        // console.log(tourUpdate);
+        else {
+            tourApi
+                .updateTour(tourUpdate, queryString.stringify(tourId).replace('tourId=', ''))
+                .then((response) => {
+                    toast.success('Update success', {
+                        autoClose: 500,
+                    });
+                })
+                .catch((err) => console.log(err));
+            navigate('../');
+        }
     };
     useEffect(() => {
         const getData = async () => {
@@ -95,19 +114,21 @@ const DetailTour = () => {
                     setDestination((prev: any) => [...prev, item.locationName]);
                 });
             });
+            await tourApi
+                .getTourById(queryString.stringify(tourId).replace('tourId=', ''))
+                .then((response) => {
+                    setTour(response);
+                });
         };
         getData();
-        tourApi
-            .getTourById(queryString.stringify(tourId).replace('tourId=', ''))
-            .then((response) => {
-                setTour(response);
-            });
     }, []);
     setValue('tourName', tour?.tourDetail.tourName);
     setValue('tourDes', tour?.tourDetail.tourDes);
     setValue('startDay', tour?.tourDetail.startDay);
     setValue('endDay', tour?.tourDetail.endDay);
     setValue('price', tour?.tourDetail.price);
+    console.log(urls.length);
+
     return (
         <div className='max-w-5xl mx-auto h-screen'>
             <div className='bg-white mt-10 rounded-md px-10 pt-10 pb-5'>
@@ -221,6 +242,23 @@ const DetailTour = () => {
                                     </div>
                                 )}
                             </button>
+                        </div>
+                        <div className='flex mt-10'>
+                            {urls.length === 0
+                                ? tour?.tourDetail.images.map((image: string) => (
+                                      <img
+                                          className='object-cover w-[100px] h-[100px] mx-5 '
+                                          src={image}
+                                          alt=''
+                                      />
+                                  ))
+                                : urls.map((image: string) => (
+                                      <img
+                                          className='object-cover w-[100px] h-[100px] mx-5 '
+                                          src={image}
+                                          alt=''
+                                      />
+                                  ))}
                         </div>
                         <button
                             type='submit'
