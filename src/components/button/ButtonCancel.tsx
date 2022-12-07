@@ -22,7 +22,7 @@ const ButtonCancel = ({ onClick, disable }: PropTypes) => {
             <span className='leading-none'>
                 <IconTrash />
             </span>
-            Cancle
+            Cancel
         </button>
     );
 };

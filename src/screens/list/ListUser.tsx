@@ -1,8 +1,8 @@
 import { Avatar, Modal, Pagination } from 'flowbite-react';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import userApi from '~/api/user.api';
-import NewUser from '../new/NewUser';
 
 const List = () => {
     const [currentPage, setCurrentPage] = useState(1);
@@ -10,6 +10,16 @@ const List = () => {
     const [totalPages, setTotalPages] = useState(1);
     const [response, setResponse] = useState<any>();
     const [isModal, setIsModal] = useState(false);
+    const [isDelete, setIsDelete] = useState(false);
+    const [idDelete, setIdDelete] = useState('');
+    const navigate = useNavigate();
+
+    const getData = async (page: number) => {
+        await userApi.getUsers(page - 1).then((users) => {
+            setResponse(users);
+            setUsers(users.data);
+        });
+    };
     const onPageChange = (page: number) => {
         userApi.getUsers(page - 1).then((users) => {
             setUsers(users.data);
@@ -22,56 +32,65 @@ const List = () => {
             setTotalPages(response.totalPages);
         }
     }
-    const handleDelete = () =>
-        toast.success('Delete Success!', {
+
+    const onClose = () => {
+        setIsModal(!isModal);
+    };
+    const deleteClose = () => {
+        setIsDelete(!isDelete);
+    };
+    const handleDelete = (id: string) => {
+        setIsDelete(!isDelete);
+        setIdDelete(id);
+    };
+    const handleDeleteSuccess = async (id: string) => {
+        await userApi.deleteUser(id).then((response) => {
+            if (response.status === 200)
+                toast.success('Delete Success!', {
+                    autoClose: 500,
+                    delay: 50,
+                    draggable: true,
+                    pauseOnHover: false,
+                });
+        });
+        setIsDelete(!isDelete);
+        getData(currentPage);
+    };
+    const handleEdit = (id: string) => {
+        navigate(`${id}`);
+        toast.success('Edit View!', {
             delay: 50,
-            draggable: true,
+            draggable: false,
             pauseOnHover: false,
         });
-
-    const onEdit = () => {
-        setIsModal(!isModal);
-        // toast.success('Edit View!', {
-        //     delay: 50,
-        //     draggable: false,
-        //     pauseOnHover: false,
-        // });
     };
     useEffect(() => {
-        const getData = async () => {
-            await userApi.getUsers(currentPage - 1).then((users) => {
-                setResponse(users);
-                setUsers(users.data);
-            });
-        };
-        getData();
+        getData(currentPage);
     }, []);
 
     return (
         <>
             <div className='p-2'>
-                {/* <div>
-                    <button
-                        className='flex items-center text-black bg-white p-1 mx-8 my-2 rounded-2xl border border-gray-c4'
-                        onClick={() => {
-                            setIsModal(true);
-                        }}
-                    >
-                        <IconAdd />
-                        <span className='flex items-center mr-2'>Add New</span>
-                    </button>
-                </div> */}
-                <Modal show={isModal} size='lg' popup={true} onClose={onEdit}>
+                <Modal show={isDelete} size='lg' popup={true} onClose={deleteClose}>
                     <Modal.Header />
                     <Modal.Body>
-                        <NewUser />
+                        <div className='text-center'>
+                            <h3 className='mb-5 text-lg font-normal text-gray-500 dark:text-gray-400'>
+                                Are you sure you want to delete this user?
+                            </h3>
+                            <div className='flex justify-center gap-4 text-warning'>
+                                <button
+                                    color='failure'
+                                    onClick={() => handleDeleteSuccess(idDelete)}
+                                >
+                                    Yes, I'm sure
+                                </button>
+                                <button color='gray' onClick={deleteClose}>
+                                    No, cancel
+                                </button>
+                            </div>
+                        </div>
                     </Modal.Body>
-                    <Modal.Footer>
-                        <button onClick={onEdit}>I accept</button>
-                        <button color='gray' onClick={onEdit}>
-                            Decline
-                        </button>
-                    </Modal.Footer>
                 </Modal>
                 <div className='overflow-x-auto rounded-2xl mx-8 border border-gray-c4'>
                     <table className='bg-white  w-[100%] text-sm text-left text-gray-400 '>
@@ -121,13 +140,13 @@ const List = () => {
                                     <td className='py-4 px-6 text-gray-c8'>
                                         <button
                                             className='text-green-500 font-semibold uppercase'
-                                            onClick={onEdit}
+                                            onClick={() => handleEdit(user.id)}
                                         >
                                             <span>Edit</span>
                                         </button>
                                         <button
                                             className='ml-2 text-red-500 font-semibold uppercase'
-                                            onClick={() => handleDelete()}
+                                            onClick={() => handleDelete(user.id)}
                                         >
                                             <span>Delete</span>
                                         </button>

@@ -112,7 +112,7 @@ function Login() {
             <div className='flex flex-col items-center m-auto p-5 bg-white rounded-2xl shadow-lg w-[40%]'>
                 <IconUser />
                 <Link to={'/admin'}>
-                    <h1 className='text-black text-3xl font-bold'>Teaching Me</h1>
+                    <h1 className='text-black text-3xl font-bold'>Trip Guide</h1>
                 </Link>
                 <form className='text-center w-[70%] mx-auto' onSubmit={handleSubmit(loginHandler)}>
                     <div className='flex flex-col'>

@@ -39,8 +39,8 @@ const userApi = {
         const url = `user/avt/${email}`;
         return AxiosClient.put(url, avatar);
     },
-    deleteUser: (email: string) => {
-        const url = `user/delete/${email}`;
+    deleteUser: (id: string) => {
+        const url = `user/delete/${id}`;
         return AxiosClient.delete(url);
     },
     searchUser: (search: string) => {

@@ -68,26 +68,48 @@ const ProfilePage = () => {
     };
 
     const handleUpdateInfo = async ({ street, district, city, ...values }: any) => {
-        const userUpdate = {
-            address: {
-                street,
-                district,
-                city,
-            },
-            ...values,
-        };
-        console.log(userUpdate);
+        if (street === '') {
+            toast.error('Please fill the street', {
+                autoClose: 500,
+            });
+        } else if (district === '') {
+            toast.error('Please fill the district', {
+                autoClose: 500,
+            });
+        } else if (city === '') {
+            toast.error('Please fill the city', {
+                autoClose: 500,
+            });
+        } else if (values.fullName === '') {
+            toast.error('Please fill Full Name', {
+                autoClose: 500,
+            });
+        } else if (values.birthDay === '') {
+            toast.error('Please fill the birth day', {
+                autoClose: 500,
+            });
+        } else {
+            const userUpdate = {
+                address: {
+                    street,
+                    district,
+                    city,
+                },
+                ...values,
+            };
+            console.log(userUpdate);
 
-        await userApi.updateProfile(userUpdate).then((responseUser) => {
-            setResponse(responseUser);
-        });
-        setDisableBtnSubmit(!disableBtnSubmit);
-        setDisableBtnEdit(!disableBtnEdit);
-        setDisable(!disable);
-        navigate('../');
-        toast.success('Update success!', {
-            autoClose: 500,
-        });
+            await userApi.updateProfile(userUpdate).then((responseUser) => {
+                setResponse(responseUser);
+            });
+            setDisableBtnSubmit(!disableBtnSubmit);
+            setDisableBtnEdit(!disableBtnEdit);
+            setDisable(!disable);
+            navigate('../');
+            toast.success('Update success!', {
+                autoClose: 500,
+            });
+        }
     };
 
     // const handleUpdateInfo = (values: object) => console.log(values);
@@ -97,15 +119,11 @@ const ProfilePage = () => {
             <div className='max-w-7xl flex flex-col gap-[30px] lg:flex-row lg:gap-[33px] mx-auto py-10 px-5'>
                 <CardAvt />
                 <div className='flex-1 px-5 lg:px-0'>
-                    <div className='flex justify-between'>
-                        <Link to={'../'}>
-                            <h1 className='border-gray-c3 mt-5 hidden border-b pb-8 lg:block text-3xl text-white font-semibold'>
-                                <span className='flex items-center'>
-                                    {' '}
-                                    {/* <Logo /> <p className='mx-5'>Home</p> */}
-                                    <LogoDefault />
-                                </span>
-                            </h1>
+                    <div className='flex justify-between '>
+                        <Link to={'/'}>
+                            <div className='border-gray-c3 mt-5 hidden border-b pb-8 lg:block text-3xl text-white font-semibold'>
+                                <LogoDefault />
+                            </div>
                         </Link>
                         <h1 className='border-gray-c3 mt-5 hidden border-b pb-8 lg:block text-3xl text-white font-semibold'>
                             My Profile

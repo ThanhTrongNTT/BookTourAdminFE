@@ -1,10 +1,8 @@
 import { Modal, Pagination } from 'flowbite-react';
-import { ModalHeader } from 'flowbite-react/lib/esm/components/Modal/ModalHeader';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import locationApi from '~/api/location.api';
-import Dialog from '~/components/dialog/Dialog';
 import { IconAdd } from '~/components/icon/Icon';
 import NewLocation from '../new/NewLocation';
 
@@ -164,7 +162,6 @@ const ListLocation = () => {
                         </tbody>
                     </table>
                 </div>
-                {/* {totalPages > 1 ? ( */}
                 <div className='flex items-center justify-center text-center'>
                     <Pagination
                         showIcons={true}
@@ -174,9 +171,6 @@ const ListLocation = () => {
                         onPageChange={onPageChange}
                     />
                 </div>
-                {/* ) : (
-                    ''
-                )} */}
             </div>
         </>
     );

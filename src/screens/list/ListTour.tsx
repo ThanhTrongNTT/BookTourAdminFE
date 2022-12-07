@@ -9,13 +9,23 @@ import NewTour from '../new/NewTour';
 const ListTour = () => {
     const navigate = useNavigate();
     const [currentPage, setCurrentPage] = useState(1);
-    const [tours, setTours] = useState([]);
+    const [tours, setTours] = useState<any>([]);
     const [totalPages, setTotalPages] = useState(1);
     const [response, setResponse] = useState<any>();
     const [isModal, setIsModal] = useState(false);
     const [isDelete, setIsDelete] = useState(false);
+    const [idDelete, setIdDelete] = useState('');
+    const getData = async (page: number) => {
+        await tourApi.getTours(page - 1).then((reponse) => {
+            setResponse(reponse);
+            setTours(reponse.data);
+        });
+    };
     const onClose = () => {
         setIsModal(!isModal);
+    };
+    const deleteClose = () => {
+        setIsDelete(!isDelete);
     };
     const onPageChange = (page: number) => {
         tourApi.getTours(page - 1).then((reponse) => {
@@ -28,17 +38,22 @@ const ListTour = () => {
             setTotalPages(response.totalPages);
         }
     }
-    const handleDelete = () => setIsDelete(!isDelete);
-    const handleDeleteSuccess = (id: string) => {
-        tourApi.deleteTour(id).then((response) => {
-            toast.success('Delete Success!', {
-                delay: 50,
-                draggable: true,
-                pauseOnHover: false,
-            });
-            setIsDelete(!isDelete);
-            window.location.reload();
+    const handleDelete = (id: string) => {
+        setIsDelete(!isDelete);
+        setIdDelete(id);
+    };
+    const handleDeleteSuccess = async (id: string) => {
+        await tourApi.deleteTour(id).then((response) => {
+            if (response.status === 200)
+                toast.success('Delete Success!', {
+                    autoClose: 500,
+                    delay: 50,
+                    draggable: true,
+                    pauseOnHover: false,
+                });
         });
+        setIsDelete(!isDelete);
+        getData(currentPage);
     };
 
     const handleEdit = async (id: string) => {
@@ -50,13 +65,7 @@ const ListTour = () => {
         });
     };
     useEffect(() => {
-        const getData = async () => {
-            await tourApi.getTours(currentPage - 1).then((reponse) => {
-                setResponse(reponse);
-                setTours(reponse.data);
-            });
-        };
-        getData();
+        getData(currentPage);
     }, []);
 
     return (
@@ -77,6 +86,27 @@ const ListTour = () => {
                     <Modal.Header />
                     <Modal.Body>
                         <NewTour />
+                    </Modal.Body>
+                </Modal>
+                <Modal show={isDelete} size='lg' popup={true} onClose={deleteClose}>
+                    <Modal.Header />
+                    <Modal.Body>
+                        <div className='text-center'>
+                            <h3 className='mb-5 text-lg font-normal text-gray-500 dark:text-gray-400'>
+                                Are you sure you want to delete this tour?
+                            </h3>
+                            <div className='flex justify-center gap-4 text-warning'>
+                                <button
+                                    color='failure'
+                                    onClick={() => handleDeleteSuccess(idDelete)}
+                                >
+                                    Yes, I'm sure
+                                </button>
+                                <button color='gray' onClick={deleteClose}>
+                                    No, cancel
+                                </button>
+                            </div>
+                        </div>
                     </Modal.Body>
                 </Modal>
                 <div className='overflow-x-auto rounded-2xl mx-8 border border-gray-c4'>
@@ -128,32 +158,6 @@ const ListTour = () => {
                                             alt=''
                                         />
                                     </th>
-                                    <Modal
-                                        show={isDelete}
-                                        size='lg'
-                                        popup={true}
-                                        onClose={handleDelete}
-                                    >
-                                        <Modal.Header />
-                                        <Modal.Body>
-                                            <div className='text-center'>
-                                                <h3 className='mb-5 text-lg font-normal text-gray-500 dark:text-gray-400'>
-                                                    Are you sure you want to delete this product?
-                                                </h3>
-                                                <div className='flex justify-center gap-4 text-warning'>
-                                                    <button
-                                                        color='failure'
-                                                        onClick={() => handleDeleteSuccess(tour.id)}
-                                                    >
-                                                        Yes, I'm sure
-                                                    </button>
-                                                    <button color='gray' onClick={handleDelete}>
-                                                        No, cancel
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </Modal.Body>
-                                    </Modal>
                                     <th
                                         scope='row'
                                         className='py-4 px-6 font-medium text-black whitespace-wrap w-[380px]'
@@ -173,10 +177,10 @@ const ListTour = () => {
                                         scope='row'
                                         className='py-4 px-6 font-medium text-black whitespace-nowrap'
                                     >
-                                        {tour.tourDetail.beginningLocation.locationName}
+                                        {tour.tourDetail.beginningLocation.locationName ?? ''}
                                     </th>
                                     <td className='py-4 px-6 font-medium text-black'>
-                                        {tour.tourDetail.destinationLocation.locationName}
+                                        {/* {tour.tourDetail.destinationLocation.locationName ?? ''} */}
                                     </td>
                                     <td className='py-4 px-6 text-gray-c8'>
                                         {tour.tourDetail.startDay}
@@ -195,7 +199,7 @@ const ListTour = () => {
                                             </button>
                                             <button
                                                 className='ml-2 text-red-500 font-semibold uppercase'
-                                                onClick={handleDelete}
+                                                onClick={() => handleDelete(tour.id)}
                                             >
                                                 <span>Delete</span>
                                             </button>
