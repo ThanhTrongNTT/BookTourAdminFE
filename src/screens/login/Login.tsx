@@ -43,14 +43,15 @@ function Login() {
         const { email, password } = values;
 
         const data: any = await userApi.login(email, password);
-        if (data.response?.status === 400) {
-            toast.error(data.response?.data.message, {
-                autoClose: 500,
-                delay: 10,
-                draggable: true,
-                pauseOnHover: false,
-            });
-        } else if (data.response?.status === 404) {
+        // if (data.response?.status === 400) {
+        //     toast.error(data.response?.data.message, {
+        //         autoClose: 500,
+        //         delay: 10,
+        //         draggable: true,
+        //         pauseOnHover: false,
+        //     });
+        // } else
+        if (data.response?.status === 404) {
             toast.error(`User does not esited!`, {
                 autoClose: 500,
                 delay: 10,
