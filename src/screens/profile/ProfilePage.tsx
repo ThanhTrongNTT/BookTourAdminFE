@@ -115,161 +115,159 @@ const ProfilePage = () => {
     // const handleUpdateInfo = (values: object) => console.log(values);
 
     return (
-        <div className=''>
-            <div className='max-w-7xl flex flex-col gap-[30px] lg:flex-row lg:gap-[33px] mx-auto py-10 px-5'>
-                <CardAvt />
-                <div className='flex-1 px-5 lg:px-0'>
-                    <div className='flex justify-between '>
-                        <Link to={'/'}>
-                            <div className='border-gray-c3 mt-5 hidden border-b pb-8 lg:block text-3xl text-white font-semibold'>
-                                <LogoDefault />
-                            </div>
-                        </Link>
-                        <h1 className='border-gray-c3 mt-5 hidden border-b pb-8 lg:block text-3xl text-white font-semibold'>
-                            My Profile
-                        </h1>
-                    </div>
-                    <div className='mt-20 font-DMSans'>
-                        <div className='mb-12 flex justify-between'>
-                            <p className='text-grayScale-c2 text-xl font-medium dark:text-white lg:text-2xl'>
-                                {/* Hi, I'm {user.fullName} */}
-                                Hi, I'm {user?.fullName}
-                            </p>
-                            <button
-                                disabled={disableBtnEdit}
-                                type='button'
-                                className={classNames(
-                                    'text-white text-semibold px-3 py-1 rounded-full border hover:bg-slate-100 hover:text-black transition-all border-gray-c4',
-                                    disableBtnEdit ? 'bg-gray-c4' : 'bg-transparent',
-                                )}
-                                onClick={handleEditProfile}
-                            >
-                                <div className='flex items-center justify-center gap-2'>
-                                    <span>
-                                        <IconPenUnderline />
-                                    </span>
-                                    <span>Edit your profile</span>
-                                </div>
-                            </button>
+        <div className='max-w-7xl flex flex-col gap-[30px] lg:flex-row lg:gap-[33px] mx-auto py-10 px-5'>
+            <CardAvt />
+            <div className='flex-1 px-5 lg:px-0'>
+                <div className='flex justify-between '>
+                    <Link to={'/'}>
+                        <div className='border-gray-c3 my-5 hidden border-b pb-8 lg:block text-3xl text-white font-semibold'>
+                            <LogoDefault />
                         </div>
-                        <form
-                            onChange={() => setDisableBtnSubmit(false)}
-                            onSubmit={handleSubmit(handleUpdateInfo)}
-                            className='mt-10'
+                    </Link>
+                    <h1 className='border-gray-c3 my-5 hidden border-b pb-8 lg:block text-3xl text-white font-semibold'>
+                        My Profile
+                    </h1>
+                </div>
+                <div className='font-DMSans'>
+                    <div className='mb-2 flex justify-between'>
+                        <p className='text-grayScale-c2 text-xl font-medium dark:text-white lg:text-2xl'>
+                            {/* Hi, I'm {user.fullName} */}
+                            Hi, I'm {user?.fullName}
+                        </p>
+                        <button
+                            disabled={disableBtnEdit}
+                            type='button'
+                            className={classNames(
+                                'text-white text-semibold px-3 py-1 rounded-full border hover:bg-slate-100 hover:text-black transition-all border-gray-c4',
+                                disableBtnEdit ? 'bg-gray-c4' : 'bg-transparent',
+                            )}
+                            onClick={handleEditProfile}
                         >
-                            <div className='grid grid-rows-3 gap-8'>
-                                <div className='grid grid-cols-3 grid-rows-1 gap-8'>
-                                    <FieldUpdateProfile
-                                        name='street'
-                                        id='street'
-                                        placeholder='Enter your street'
-                                        control={control}
-                                        icon={<IconHouse />}
-                                        hasDisable={disable}
-                                        color='text-white'
-                                    >
-                                        Street
-                                    </FieldUpdateProfile>
-                                    <FieldUpdateProfile
-                                        name='district'
-                                        id='district'
-                                        placeholder='Enter your district'
-                                        control={control}
-                                        icon={<IconHouse />}
-                                        hasDisable={disable}
-                                        color='text-white'
-                                    >
-                                        District
-                                    </FieldUpdateProfile>
-                                    <FieldUpdateProfile
-                                        name='city'
-                                        id='city'
-                                        placeholder='Enter your city'
-                                        control={control}
-                                        icon={<IconHouse />}
-                                        hasDisable={disable}
-                                        color='text-white'
-                                    >
-                                        City
-                                    </FieldUpdateProfile>
-                                </div>
-                                <div className='grid grid-cols-2 gap-8'>
-                                    <FieldUpdateProfile
-                                        name='fullName'
-                                        id='fullName'
-                                        placeholder='Enter your full name'
-                                        control={control}
-                                        icon={<IconName />}
-                                        hasDisable={disable}
-                                        color='text-white'
-                                    >
-                                        Full Name
-                                    </FieldUpdateProfile>
-                                    <FieldUpdateProfile
-                                        name='email'
-                                        id='email'
-                                        placeholder='Enter your email'
-                                        control={control}
-                                        icon={<IconEmail />}
-                                        tabIndex={-1}
-                                        hasDisable
-                                        color='text-white'
-                                    >
-                                        Email
-                                    </FieldUpdateProfile>
-                                </div>
-                                <div className='grid grid-cols-2 gap-9'>
-                                    <FieldUpdateProfile
-                                        type='text'
-                                        name='birthDay'
-                                        id='birthDay'
-                                        placeholder='dd/mm/yyyy'
-                                        control={control}
-                                        icon={<IconCake />}
-                                        hasDisable={disable}
-                                        color='text-white'
-                                    >
-                                        Date Of Birth
-                                    </FieldUpdateProfile>
-                                    <div className='flex flex-col gap-4'>
-                                        <label
-                                            htmlFor='genderType'
-                                            className='font-DMSans text-sm font-bold text-c4 text-white'
-                                        >
-                                            Gender
-                                        </label>
-                                        {user?.gender ? (
-                                            <DropdownIcon
-                                                setValue={setValue}
-                                                control={control}
-                                                name='gender'
-                                                disable={disable}
-                                                list={['MALE', 'FEMALE', 'ANOTHER']}
-                                                icon={<IconGender />}
-                                                color='text-white'
-                                                dropdownLabel={user?.gender}
-                                            />
-                                        ) : (
-                                            ''
-                                        )}
-                                    </div>
-                                </div>
+                            <div className='flex items-center justify-center gap-2'>
+                                <span>
+                                    <IconPenUnderline />
+                                </span>
+                                <span>Edit your profile</span>
                             </div>
-                            <div className='mt-8 inline-block w-full text-right'>
-                                <div className='inline-block'>
-                                    <div className='flex items-center'>
-                                        <ButtonCancel
-                                            onClick={handleCancelEdit}
-                                            disable={disableBtnSubmit}
-                                        />
-                                        <ButtonSubmit disable={disableBtnSubmit}>
-                                            Update Profile
-                                        </ButtonSubmit>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
+                        </button>
                     </div>
+                    <form
+                        onChange={() => setDisableBtnSubmit(false)}
+                        onSubmit={handleSubmit(handleUpdateInfo)}
+                        className='mt-3'
+                    >
+                        <div className='grid grid-rows-3 gap-8'>
+                            <div className='grid grid-cols-3 grid-rows-1 gap-8'>
+                                <FieldUpdateProfile
+                                    name='street'
+                                    id='street'
+                                    placeholder='Enter your street'
+                                    control={control}
+                                    icon={<IconHouse />}
+                                    hasDisable={disable}
+                                    color='text-white'
+                                >
+                                    Street
+                                </FieldUpdateProfile>
+                                <FieldUpdateProfile
+                                    name='district'
+                                    id='district'
+                                    placeholder='Enter your district'
+                                    control={control}
+                                    icon={<IconHouse />}
+                                    hasDisable={disable}
+                                    color='text-white'
+                                >
+                                    District
+                                </FieldUpdateProfile>
+                                <FieldUpdateProfile
+                                    name='city'
+                                    id='city'
+                                    placeholder='Enter your city'
+                                    control={control}
+                                    icon={<IconHouse />}
+                                    hasDisable={disable}
+                                    color='text-white'
+                                >
+                                    City
+                                </FieldUpdateProfile>
+                            </div>
+                            <div className='grid grid-cols-2 gap-8'>
+                                <FieldUpdateProfile
+                                    name='fullName'
+                                    id='fullName'
+                                    placeholder='Enter your full name'
+                                    control={control}
+                                    icon={<IconName />}
+                                    hasDisable={disable}
+                                    color='text-white'
+                                >
+                                    Full Name
+                                </FieldUpdateProfile>
+                                <FieldUpdateProfile
+                                    name='email'
+                                    id='email'
+                                    placeholder='Enter your email'
+                                    control={control}
+                                    icon={<IconEmail />}
+                                    tabIndex={-1}
+                                    hasDisable
+                                    color='text-white'
+                                >
+                                    Email
+                                </FieldUpdateProfile>
+                            </div>
+                            <div className='grid grid-cols-2 gap-9'>
+                                <FieldUpdateProfile
+                                    type='text'
+                                    name='birthDay'
+                                    id='birthDay'
+                                    placeholder='dd/mm/yyyy'
+                                    control={control}
+                                    icon={<IconCake />}
+                                    hasDisable={disable}
+                                    color='text-white'
+                                >
+                                    Date Of Birth
+                                </FieldUpdateProfile>
+                                <div className='flex flex-col gap-4'>
+                                    <label
+                                        htmlFor='genderType'
+                                        className='font-DMSans text-sm font-bold text-c4 text-white'
+                                    >
+                                        Gender
+                                    </label>
+                                    {user?.gender ? (
+                                        <DropdownIcon
+                                            setValue={setValue}
+                                            control={control}
+                                            name='gender'
+                                            disable={disable}
+                                            list={['MALE', 'FEMALE', 'ANOTHER']}
+                                            icon={<IconGender />}
+                                            color='text-white'
+                                            dropdownLabel={user?.gender}
+                                        />
+                                    ) : (
+                                        ''
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+                        <div className='mt-8 inline-block w-full text-right'>
+                            <div className='inline-block'>
+                                <div className='flex items-center'>
+                                    <ButtonCancel
+                                        onClick={handleCancelEdit}
+                                        disable={disableBtnSubmit}
+                                    />
+                                    <ButtonSubmit disable={disableBtnSubmit}>
+                                        Update Profile
+                                    </ButtonSubmit>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
